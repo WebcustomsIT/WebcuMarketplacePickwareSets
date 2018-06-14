@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Shopware\Bundle\StoreFrontBundle\Struct\ListProduct;
 use Shopware\Models\Article\Article;
 use Shopware\Models\Article\Detail;
+use Shopware\Models\Plugin\Plugin;
 use Shopware_Components_Snippet_Manager;
 use WebcuMarketplaceConnector\Models\CustomAttributeInterface;
 
@@ -28,6 +29,24 @@ class PickwareSetsStock implements CustomAttributeInterface
         $this->em       = $em;
         $this->snippets = $snippets;
         $this->snippets->addConfigDir($pluginDir . '/Resources/snippets');
+    }
+
+    /**
+     * Whether or not the function should be used.
+     *
+     * For example: you can return `false` if your depending plugin is not active
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        $p = $this->em->getRepository(Plugin::class)
+            ->findOneBy(['name' => 'ViisonSetArticles']);
+        if ($p === null) {
+            return false;
+        }
+
+        return $p->getActive();
     }
 
     /**
@@ -74,6 +93,19 @@ class PickwareSetsStock implements CustomAttributeInterface
             }
         }
 
+        return null;
+    }
+
+    /**
+     * Can return an array (key-value) of values one can map ("Wertzuordnung")
+     *
+     * Example: using this, one can allow mapping your custom values to (for example)
+     * the limited amount of 'color' values allowed at Amazon.
+     *
+     * @return array|null
+     */
+    public function getMappingValues()
+    {
         return null;
     }
 }
