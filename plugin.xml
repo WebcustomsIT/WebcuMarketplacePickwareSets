@@ -12,5 +12,6 @@
     <compatibility minVersion="5.2.2"/>
     <requiredPlugins>
         <requiredPlugin pluginName="ViisonSetArticles" minVersion="1.3.30"/>
+        <requiredPlugin pluginName="WebcuMarketplaceConnector" minVersion="4.0.0"/>
     </requiredPlugins>
 </plugin>
