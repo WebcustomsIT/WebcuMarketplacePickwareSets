@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/shopware/5.2/engine/Shopware/Components/Plugin/schema/plugin.xsd">
+    <label>Marketplace Connector - Pickware Sets</label>
+    <label lang="de">Marketplace Connector - Pickware Stücklisten</label>
+    <version>0.1</version>
+    <license>proprietary</license>
+    <author>Webcustoms IT Solutions GmbH</author>
+    <link>https://webcustoms.de</link>
+    <copyright>(c) by Webcustoms IT Solutions GmbH</copyright>
+
+    <compatibility minVersion="5.2.2"/>
+    <requiredPlugins>
+        <requiredPlugin pluginName="ViisonSetArticles" minVersion="1.3.30"/>
+    </requiredPlugins>
+</plugin>

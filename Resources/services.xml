@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service class="WebcuMarketplacePickwareSets\Components\PickwareSetsStock">
+            <argument type="service" id="models"/>
+            <argument type="service" id="snippets"/>
+            <argument type="string">%webcu_marketplace_pickware_sets.plugin_dir%</argument>
+
+            <tag name="webcu_marketplace_connector.attributes_plugin"/>
+        </service>
+    </services>
+</container>
