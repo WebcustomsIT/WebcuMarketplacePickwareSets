@@ -4,14 +4,13 @@ namespace WebcuMarketplacePickwareSets\Components;
 
 
 use Doctrine\ORM\EntityManagerInterface;
-use Shopware\Bundle\StoreFrontBundle\Struct\ListProduct;
-use Shopware\Models\Article\Article;
-use Shopware\Models\Article\Detail;
 use Shopware\Models\Plugin\Plugin;
 use Shopware_Components_Snippet_Manager;
-use WebcuMarketplaceConnector\Models\CustomAttributeInterface;
+use WebcuMarketplaceConnector\Bridge\Shopware\Article\AttributeInterface;
+use WebcuMarketplaceConnector\Bridge\Shopware\Article\RequestOptions;
+use WebcuMarketplaceConnector\Models\ColumnConfig;
 
-class PickwareSetsStock implements CustomAttributeInterface
+class PickwareSetsStock implements AttributeInterface
 {
     /** @var EntityManagerInterface */
     protected $em;
@@ -59,6 +58,8 @@ class PickwareSetsStock implements CustomAttributeInterface
     }
 
     /**
+     * This key should usually be prefixed by your plugin technical name, to prevent collision.
+     *
      * @return string
      */
     public function getKey()
@@ -67,15 +68,12 @@ class PickwareSetsStock implements CustomAttributeInterface
     }
 
     /**
-     * @param Article     $swArticle
-     * @param Detail      $swDetail
-     * @param ListProduct $listProduct
-     * @param array       $detail
+     * @param RequestOptions $o
      * @return mixed
      */
-    public function getValue($swArticle, $swDetail, $listProduct, $detail)
+    public function getValue(RequestOptions $o)
     {
-        $attr = $swArticle->getAttribute();
+        $attr = $o->getArticle()->getAttribute();
         if ($attr) {
             // Additional check to prevent crashing if dependent plugin is missing
             if (method_exists($attr, 'getViisonSetarticleActive')) {
@@ -86,7 +84,7 @@ class PickwareSetsStock implements CustomAttributeInterface
                             WHERE savs.setid = :setArticleId';
 
                     $calculatedInstock = $this->em->getConnection()->fetchAssoc($sql, [
-                        'setArticleId' => $swDetail->getId(),
+                        'setArticleId' => $o->getDetail()->getId(),
                     ]);
                     return $calculatedInstock['instock'] ? max(0, $calculatedInstock['instock']) : 0;
                 }
@@ -105,6 +103,29 @@ class PickwareSetsStock implements CustomAttributeInterface
      * @return array|null
      */
     public function getMappingValues()
+    {
+        return null;
+    }
+
+    /**
+     * Indicates which MAPPING_* this one is categorized in
+     *
+     * @return int
+     * @see ColumnConfig
+     */
+    public function getType()
+    {
+        return ColumnConfig::MAPPING_PLUGIN;
+    }
+
+    /**
+     * Indicates which <optgroup> this attribute should be listed in.
+     *
+     * When offering more than one in your plugin, you might want to group them by function (or by plugin).
+     *
+     * @return string|null
+     */
+    public function getGroup()
     {
         return null;
     }
