@@ -10,7 +10,7 @@
             <argument type="service" id="snippets"/>
             <argument type="string">%webcu_marketplace_pickware_sets.plugin_dir%</argument>
 
-            <tag name="webcu_marketplace_connector.attributes_plugin"/>
+            <tag name="webcu_marketplace_connector.attribute"/>
         </service>
     </services>
 </container>
